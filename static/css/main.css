@@ -1,0 +1,20 @@
+body{
+    
+    font-family: sans-serif;
+    
+    background-color: cadetblue;
+}
+
+h1{
+    margin: 0px 40%;
+    width: 600px;
+}
+
+#table{
+    margin: 0px auto;
+    border: 1px solid black;
+}
+
+form{
+    margin: 0px auto;
+}
