@@ -1,20 +1,23 @@
 body{
-    
     font-family: sans-serif;
-    
     background-color: cadetblue;
 }
 
 h1{
-    margin: 0px 40%;
-    width: 600px;
+    text-align: center;
+}
+
+#table,td,th{
+    margin: 0px auto;
+    border: 1px solid black;
+    border-collapse: collapse;
 }
 
 #table{
-    margin: 0px auto;
-    border: 1px solid black;
+    width: 80%;
 }
 
 form{
-    margin: 0px auto;
+    margin-top: 20px;
+    text-align: center;
 }

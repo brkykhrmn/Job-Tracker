@@ -36,6 +36,40 @@ def index():
     else:
         application = Job.query.order_by(Job.date_created).all()
         return render_template("index.html", application=application)
+    
+
+@app.route("/delete/<int:id>")
+def delete(id):
+    application_to_delete = Job.query.get_or_404(id)
+
+    try:
+        db.session.delete(application_to_delete)
+        db.session.commit()
+        return redirect('/')
+    
+    except:
+        return 'Error'
+    
+
+@app.route("/update/<int:id>", methods=['GET', 'POST'])
+def update(id):
+    application_to_update = Job.query.get_or_404(id)
+
+    if request.method == 'POST':
+        application_to_update.company = request.form['Company']
+        application_to_update.position = request.form['Position']
+        application_to_update.status = request.form['Status']
+
+        try:
+            db.session.commit()
+            return redirect('/')
+        
+        except:
+            return 'Error'
+
+    else:
+        return render_template("update.html", application_to_update=application_to_update)
+
 
 if __name__ == "__main__":
     with app.app_context():

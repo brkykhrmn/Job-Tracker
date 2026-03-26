@@ -9,21 +9,24 @@
 <body>
     <h1>Job Tracker</h1>
 
-    <table id="table" border="2">
+    <table id="table">
         <tr>
             <th>Company</th>
             <th>Position</th>
             <th>Status</th>
-            <th></th>
+            <th>Added</th>
+            <th>Actions</th>
         </tr>
         {% for i in application %}
             <tr>
                 <td>{{i.company}}</td>
                 <td>{{i.position}}</td>
                 <td>{{i.status}}</td>
-                <td>
-                    <a href="">Update</a>
-                    <a href="">Delete</a>
+                <td style="width: 15%;">{{i.date_created.date()}}</td>
+                <td style="width: 10%;">
+                    <a href="/update/{{i.id}}">Update</a>
+                    <br>
+                    <a href="/delete/{{i.id}}">Delete</a>
                 </td>
             </tr>
         {% endfor%}

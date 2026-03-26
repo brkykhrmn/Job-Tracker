@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=, initial-scale=1.0">
+    <title>Job Updater</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}">
+</head>
+<body>
+    <h1>Job Updater</h1>
+
+    <form action="/update/{{application_to_update.id}}" method="POST">
+        <input type="text" name="Company" id="company" value="{{application_to_update.company}}">
+        <input type="text" name="Position" id="position" value="{{application_to_update.position}}">
+        <input type="text" name="Status" id="status" value="{{application_to_update.status}}">
+        <input type="submit" value="Update" name="update" id="update">
+    </form>
+</body>
+</html>
