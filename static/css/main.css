@@ -5,6 +5,7 @@ body{
 
 h1{
     text-align: center;
+    margin-top: 100px;
 }
 
 #table,td,th{
@@ -17,7 +18,13 @@ h1{
     width: 80%;
 }
 
-form{
+#signup, #login{
+    display: inline;
+    margin-left: 90%;
+}
+
+#jobadd{
     margin-top: 20px;
     text-align: center;
 }
+

@@ -1,10 +1,17 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+from flask_login import UserMixin
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, SubmitField
+from wtforms.validators import InputRequired, length, ValidationError
+from flask_bcrypt import Bcrypt
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 db = SQLAlchemy(app)
+bcrypt = Bcrypt(app)
+app.config['SECRET_KEY'] = "secretkey"
 
 class Job(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -15,6 +22,29 @@ class Job(db.Model):
     
     def __repr__(self):
         return '<Job %r>' %self.id
+    
+class User(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(50), nullable=False, unique=True)
+    password = db.Column(db.String(50), nullable=False)
+
+
+class SignUp(FlaskForm):
+    username = StringField(validators = [InputRequired(), length(min = 4, max = 20)], render_kw={"placeholder": "Username"})
+    password = PasswordField(validators = [InputRequired(), length(min = 4, max = 20)], render_kw={"placeholder": "Password"})
+    submit = SubmitField("Sign Up")
+
+    def validate_username(self, username):
+        user_check = User.query.filter_by(username=username.data).first()
+
+        if user_check:
+            raise ValidationError("Nah")
+
+class LogIn(FlaskForm):
+    username = StringField(validators = [InputRequired(), length(min = 4, max = 20)], render_kw={"placeholder": "Username"})
+    password = PasswordField(validators = [InputRequired(), length(min = 4, max = 20)], render_kw={"placeholder": "Password"})
+    submit = SubmitField("Log In")
+
 
 @app.route("/", methods=['POST', 'GET'])
 def index():
@@ -71,7 +101,29 @@ def update(id):
         return render_template("update.html", application_to_update=application_to_update)
 
 
+@app.route("/log_in")
+def log_in():
+    form = LogIn()
+
+    
+
+    return render_template("/log_in.html", form=form)
+
+@app.route("/sign_up", methods=["GET", "POST"])
+def sign_up():
+    form = SignUp()
+
+    if form.validate_on_submit():
+        hashed_password = bcrypt.generate_password_hash(form.password.data)
+
+        new_user = User(username = form.username.data, password=hashed_password)
+        db.session.add(new_user)
+        db.session.commit()
+        return redirect(url_for('log_in'))
+    
+    return render_template("/sign_up.html", form=form)
+
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
-    app.run(host="0.0.0.0", port=3000)
+    app.run(host="0.0.0.0", port=3000, debug=True)

@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}">
 </head>
 <body>
+    <a href="{{url_for('log_in')}}">Log In</a>
+    <a href="{{url_for('sign_up')}}">Sign Up</a>
     <h1>Job Tracker</h1>
 
     <table id="table">
@@ -32,7 +34,7 @@
         {% endfor%}
     </table>
 
-    <form action="/" method="POST">
+    <form action="/" method="POST" id="jobadd">
         <input type="text" name="Company" id="company" placeholder="Company">
         <input type="text" name="Position" id="position" placeholder="Position">
         <input type="text" name="Status" id="status" placeholder="Status">
